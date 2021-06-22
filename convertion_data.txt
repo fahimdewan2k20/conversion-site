@@ -1,0 +1,17 @@
+[
+  {
+    "from": "feet",
+    "to": "inch",
+    "value": 12
+  },
+  {
+    "from": "meter",
+    "to": "centimeter",
+    "value": 100
+  },
+  {
+    "from": "kilogram",
+    "to": "gram",
+    "value": 1000
+  }
+]
