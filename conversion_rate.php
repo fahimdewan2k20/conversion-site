@@ -20,12 +20,12 @@
       for($i = 0; $i < count($arr1); $i++) {
         $decode = $arr1[$i];
         echo "<label>" . $decode->from . ' to ' . $decode->to . ": </label>";
-        echo "<input value='1'></input>";
-        echo "<input value=" . $decode->value . "></input>";
+        echo "<input value='1' disabled></input>";
+        echo "<input value=" . $decode->value . " disabled></input>";
         echo "<br>";
         echo "<label>" . $decode->to . ' to ' . $decode->from . ": </label>";
-        echo "<input value='1'></input>";
-        echo "<input value=" . 1/$decode->value . "></input>";
+        echo "<input value='1' disabled></input>";
+        echo "<input value=" . 1/$decode->value . " disabled></input>";
         echo "<br>";
       }
     ?>

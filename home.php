@@ -12,11 +12,25 @@
 
       $input = "";
       $result = "";
-      $selection = 0;
 
       if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $selection = input($_POST['selection']);
-        echo "<h2>" . $selection . "</h2>";
+        $selection = $_POST['selection'];
+        $input = $_POST['value'];
+
+        $readData = read();
+        $arr1 = json_decode($readData);
+
+        for($i = 0; $i < count($arr1); $i++) {
+          $decode = $arr1[$i];
+          if ($decode->from === $selection) {
+            $result = $input*$decode->value;
+            break;
+          }
+          if ($decode->to === $selection) {
+            $result = $input/$decode->value;
+            break;
+          }
+        }
 
         session_start();
         $_SESSION['selection'] = $selection;
@@ -33,7 +47,7 @@
     <?php require 'menu.html'; ?>
     <h4>Converter: </h4>
     <br>
-    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" autocomplete="off">
+    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF'])?>" autocomplete="off" method="POST">
 
       <select name="selection">
 
@@ -68,7 +82,7 @@
       <label for="value">Value: </label>
       <input type="number" name="value" value="<?php echo $input; ?>">
       <br><br>
-      <button type="submit">Confirm</button>
+      <button type="submit">Convert</button>
     </form>
     <br>
     <label for="result">Result: </label>
