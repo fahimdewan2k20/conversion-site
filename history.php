@@ -11,27 +11,36 @@
     <h3>Convertion History</h3>
     <br>
     <style>
+      fieldset {
+        display: flex;
+        justify-content: center;
+      }
+      table {
+        width: 100vw;
+      }
       td {
-        width: 150px;
+        width: 25%;
         padding: 5px;
         text-align: center;
       }
     </style>
-    <table>
-    <?php
-      session_start();
-      if (isset($_SESSION["history"])) {
-        $j = 1;
-        $data = explode(',', $_SESSION["history"]);
-        echo "<tr><th>SL.</th><th>Convert</th><th>Input</th><th>Converted</th></tr>";
-        for ($i=0; $i < count($data); $i+=3) {
-          echo "<tr><td>" . $j++ . "</td><td>" . $data[$i] . "</td><td>" . $data[$i+1] . "</td><td>" . $data[$i+2] . "</td></tr>";
+    <fieldset>
+      <table>
+      <?php
+        session_start();
+        if (isset($_SESSION["history"])) {
+          $j = 1;
+          $data = explode(',', $_SESSION["history"]);
+          echo "<tr><th>SL.</th><th>Convert</th><th>Input</th><th>Converted</th></tr>";
+          for ($i=0; $i < count($data); $i+=3) {
+            echo "<tr><td>" . $j++ . "</td><td>" . $data[$i] . "</td><td>" . $data[$i+1] . "</td><td>" . $data[$i+2] . "</td></tr>";
+          }
         }
-      }
-      else {
-        echo "<p>no previous histoy</p>";
-      }
-    ?>
-    </table>
+        else {
+          echo "<p>no previous histoy</p>";
+        }
+      ?>
+      </table>
+    </fieldset>
   </body>
 </html>
