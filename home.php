@@ -12,6 +12,7 @@
 
       $input = "";
       $result = "";
+      $converted = "";
 
       if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $selection = $_POST['selection'];
@@ -24,10 +25,12 @@
           $decode = $arr1[$i];
           if ($decode->from === $selection) {
             $result = $input*$decode->value;
+            $converted = $decode->to;
             break;
           }
           if ($decode->to === $selection) {
             $result = $input/$decode->value;
+            $converted = $decode->from;
             break;
           }
         }
@@ -35,10 +38,10 @@
         session_start();
         $_SESSION['selection'] = $selection;
         if(!isset($_SESSION['history'])) {
-          $_SESSION["history"] = " ," . $input . "," . $result;
+          $_SESSION["history"] = "from " . $selection . " to " . $converted . "," . $input . "," . $result;
         }
         else {
-          $_SESSION["history"] = $_SESSION["history"] . "\n" . " ," . $input . "," . $result;
+          $_SESSION["history"] = $_SESSION["history"] . "," . "from " . $selection . " to " . $converted . "," . $input .  "," . $result;
         }
       }
     ?>
