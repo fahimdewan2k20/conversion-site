@@ -12,20 +12,20 @@
 
       $input = "";
       $result = "";
-      $selection = "10";
+      $selection = 0;
 
       if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        //$selection = input($_POST['selection']);
+        $selection = input($_POST['selection']);
         echo "<h2>" . $selection . "</h2>";
 
-
-        // session_start();
-        // if(!isset($_SESSION['history'])) {
-        //   $_SESSION["history"] = " ," + $input + "," + $result;
-        // }
-        // else {
-        //   $_SESSION["history"] += "\n" + " ," + $input + "," + $result;
-        // }
+        session_start();
+        $_SESSION['selection'] = $selection;
+        if(!isset($_SESSION['history'])) {
+          $_SESSION["history"] = " ," . $input . "," . $result;
+        }
+        else {
+          $_SESSION["history"] = $_SESSION["history"] . "\n" . " ," . $input . "," . $result;
+        }
       }
     ?>
 
@@ -35,24 +35,40 @@
     <br>
     <form action="<?php htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" autocomplete="off">
 
-    <?php
-      $readData = read();
-      $arr1 = json_decode($readData);
+      <select name="selection">
 
-      echo "<select name='selection'>";
-      for($i = 0; $i < count($arr1); $i++) {
-        $decode = $arr1[$i];
-        echo "<option value=" . $decode->from . ">" . $decode->from . " to " . $decode->to . "</option>";
-        echo "<option value=" . $decode->to . ">" . $decode->to . " to " . $decode->from . "</option>";
-      }
-      echo "</select>";
-    ?>
+      <?php
+        $readData = read();
+        $arr1 = json_decode($readData);
+        session_start();
 
-    <br><br>
-    <label for="value">Value: </label>
-    <input type="number" name="value" value="<?php echo $input; ?>">
-    <br><br>
-    <button type="submit">Confirm</button>
+        for($i = 0; $i < count($arr1); $i++) {
+          $decode = $arr1[$i];
+          $str1 = $str2 = "";
+
+          if(isset($_SESSION["selection"])) {
+            if($decode->from === $_SESSION['selection']) {
+              $str1 = "selected";
+            }
+            if($decode->to === $_SESSION['selection']) {
+              $str2 = "selected";
+            }
+          }
+          else {
+            $str1 = $decode->from;
+          }
+
+          echo "<option value=" . $decode->from . " " . $str1 . ">" . $decode->from . " to " . $decode->to . "</option>";
+          echo "<option value=" . $decode->to . " " . $str2 . ">" . $decode->to . " to " . $decode->from . "</option>";
+        }
+      ?>
+
+      </select>
+      <br><br>
+      <label for="value">Value: </label>
+      <input type="number" name="value" value="<?php echo $input; ?>">
+      <br><br>
+      <button type="submit">Confirm</button>
     </form>
     <br>
     <label for="result">Result: </label>
